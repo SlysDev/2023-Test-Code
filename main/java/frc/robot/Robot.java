@@ -1,14 +1,12 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2017-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
+
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -24,17 +22,37 @@ public class Robot extends TimedRobot {
 
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private RobotContainer robotContainer;
+  
+  private DifferentialDrive myRobot;
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.''
-   */
+  private CANSparkMax leftMotor1;
+  private CANSparkMax leftMotor2;
+  private CANSparkMax rightMotor1;
+  private CANSparkMax rightMotor2;
+
+  
+   //This function is run when the robot is first started up and should be used for any initialization code.
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
+    
+    leftMotor1= new CANSparkMax(1, MotorType.kBrushless);
+    rightMotor1 = new CANSparkMax(2, MotorType.kBrushless);
+    leftMotor2= new CANSparkMax(3, MotorType.kBrushless);
+    rightMotor2 = new CANSparkMax(4, MotorType.kBrushless);
+
+    MotorControllerGroup leftMotors = new MotorControllerGroup(leftMotor1, leftMotor2);
+    MotorControllerGroup rightMotors = new MotorControllerGroup(rightMotor1, rightMotor2);
+
+    leftMotor1.restoreFactoryDefaults();
+    rightMotor1.restoreFactoryDefaults();
+    leftMotor2.restoreFactoryDefaults();
+    rightMotor2.restoreFactoryDefaults();
+
+    myRobot = new DifferentialDrive(leftMotors, rightMotors);
   }
 
   /**
@@ -54,9 +72,8 @@ public class Robot extends TimedRobot {
     compressor.setClosedLoopControl(true);
   }
 
-  /**
-   * This function is called once each time the robot enters Disabled mode.
-   */
+  
+  // This function is called once each time the robot enters Disabled mode.
   @Override
   public void disabledInit() {
   }
@@ -65,9 +82,8 @@ public class Robot extends TimedRobot {
   public void disabledPeriodic() {
   }
 
-  /**
-   * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
-   */
+  
+   //This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
@@ -78,9 +94,8 @@ public class Robot extends TimedRobot {
     }
   }
 
-  /**
-   * This function is called periodically during autonomous.
-   */
+  
+  // This function is called periodically during autonomous. 
   @Override
   public void autonomousPeriodic() {
   }
@@ -96,9 +111,8 @@ public class Robot extends TimedRobot {
     }
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
+  
+  // This function is called periodically during operator control.
   @Override
   public void teleopPeriodic() {
   }
@@ -109,9 +123,7 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
   }
 
-  /**
-   * This function is called periodically during test mode.
-   */
+  //This function is called periodically during test mode.   
   @Override
   public void testPeriodic() {
   }
