@@ -133,6 +133,9 @@ public class Robot extends TimedRobot {
     m_myRobot.arcadeDrive(-m_Stick.getLeftY(), -m_Stick.getLeftX());
 
   }
+  public void teleopInit(){
+    
+  }
 
   }
 }
