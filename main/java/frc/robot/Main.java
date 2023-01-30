@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.RobotBase;
 public final class Main {
   private Main() {
   }
-
+     string text = "GitHub push test";
   /**
    * Main initialization function. Do not perform any initialization here.
    *
